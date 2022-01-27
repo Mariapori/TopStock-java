@@ -22,11 +22,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import java.awt.Font;
-import javax.swing.JScrollBar;
 import javax.swing.JMenuBar;
 
 public class Paaikkuna extends JFrame {
@@ -36,8 +37,8 @@ public class Paaikkuna extends JFrame {
 	 */
 	private static final long serialVersionUID = 6756547575820618963L;
 	private JPanel contentPane;
-	static DefaultListModel<String> listaTuotteet = new DefaultListModel<String>();
-	static List<Tavara> tuotteet;
+	public static DefaultListModel<String> listaTuotteet = new DefaultListModel<String>();
+	public static List<Tavara> tuotteet;
 	
 	/**
 	 * Launch the application.
@@ -67,6 +68,7 @@ public class Paaikkuna extends JFrame {
 	 * Create the frame.
 	 */
 	public Paaikkuna(ConnectionSource connectionSource) {
+		setResizable(false);
 		setTitle("TopStock");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 321);
@@ -75,7 +77,21 @@ public class Paaikkuna extends JFrame {
 		setJMenuBar(menuBar);
 		
 		JButton btnNewButton = new JButton("Uusi tuote");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					LisaaTuote dialog = new LisaaTuote(connectionSource);
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
 		menuBar.add(btnNewButton);
+		
+
+
 		contentPane = new JPanel();
 
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -101,17 +117,45 @@ public class Paaikkuna extends JFrame {
 		JList<String> list = new JList<String>(listaTuotteet);
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
+				try {
 				int index = list.getSelectedIndex();
 				Tavara tavara = tuotteet.get(index);
 				lblTuotekoodi.setText(tavara.getProductCode());
 				lblTuotenimi.setText(tavara.getProductName());
 				lblSaldo.setText("Saldo: " + tavara.getSaldo());
+				}catch(Exception ex) {
+					lblTuotekoodi.setText("");
+					lblTuotenimi.setText("");
+					lblSaldo.setText("");
+				}
 			}
 			});
 		list.setVisibleRowCount(-1);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setBounds(12, 56, 154, 203);
 		
+		JButton btnNewButton_1 = new JButton("Poista valittu");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int index = list.getSelectedIndex();
+				Tavara tavara = tuotteet.get(index);
+				list.clearSelection();
+				try {
+					Dao<Tavara, String> productDao = DaoManager.createDao(connectionSource, Tavara.class);
+					productDao.delete(tavara);
+					productDao.refresh(tavara);
+					lblTuotekoodi.setText("");
+					lblTuotenimi.setText("");
+					lblSaldo.setText("");
+					tuotteet.remove(tavara);
+					listaTuotteet.removeElement(tavara);
+					PopuloiTuotteet(connectionSource);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+				}
+			}
+		});
+		menuBar.add(btnNewButton_1);
 		contentPane.add(list);
 		
 		JSpinner saldoSpinner = new JSpinner();
@@ -192,6 +236,7 @@ public class Paaikkuna extends JFrame {
 		try {
 			Dao<Tavara, String> productDao = DaoManager.createDao(connectionSource, Tavara.class);
 			tuotteet = productDao.queryForAll();
+			listaTuotteet.removeAllElements();
 			tuotteet.forEach((tavara) -> listaTuotteet.addElement(tavara.getProductName()));
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
