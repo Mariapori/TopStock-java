@@ -29,6 +29,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import java.awt.Font;
 import javax.swing.JMenuBar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 public class Paaikkuna extends JFrame {
 
@@ -93,6 +95,8 @@ public class Paaikkuna extends JFrame {
 
 
 		contentPane = new JPanel();
+		
+		
 
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -114,7 +118,14 @@ public class Paaikkuna extends JFrame {
 		lblSaldo.setBounds(277, 77, 135, 15);
 		contentPane.add(lblSaldo);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setBounds(12, 56, 154, 197);
+		contentPane.add(scrollPane);
+		
 		JList<String> list = new JList<String>(listaTuotteet);
+		scrollPane.setViewportView(list);
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				try {
@@ -132,7 +143,6 @@ public class Paaikkuna extends JFrame {
 			});
 		list.setVisibleRowCount(-1);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setBounds(12, 56, 154, 203);
 		
 		JButton btnNewButton_1 = new JButton("Poista valittu");
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -156,7 +166,6 @@ public class Paaikkuna extends JFrame {
 			}
 		});
 		menuBar.add(btnNewButton_1);
-		contentPane.add(list);
 		
 		JSpinner saldoSpinner = new JSpinner();
 		saldoSpinner.setFont(new Font("Dialog", Font.BOLD, 24));
@@ -226,10 +235,7 @@ public class Paaikkuna extends JFrame {
 			}
 		});
 		btnNollaa.setBounds(178, 234, 169, 25);
-		contentPane.add(btnNollaa);
-		
-
-		
+		contentPane.add(btnNollaa);		
 	}
 	
 	public static void PopuloiTuotteet(ConnectionSource connectionSource) {
