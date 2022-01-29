@@ -25,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import java.awt.Font;
@@ -49,7 +50,11 @@ public class Paaikkuna extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					String connectionString = "jdbc:sqlite:kanta.db";
+					String home = System.getProperty("user.home");
+					String fullHome = home + "/topstock/";
+					File dataDir = new File(fullHome);
+					dataDir.mkdir();
+					String connectionString = "jdbc:sqlite:" + fullHome + "kanta.db";
 					ConnectionSource connectionSource = new JdbcConnectionSource(connectionString);
 					try {
 					TableUtils.createTable(connectionSource, Tavara.class);

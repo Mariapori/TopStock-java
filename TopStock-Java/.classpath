@@ -6,13 +6,13 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/topias/Lataukset/ormlite-jdbc-6.1.jar" sourcepath="/home/topias/Lataukset/ormlite-jdbc-6.1-sources.jar">
+	<classpathentry kind="lib" path="/home/topias/Lataukset/jar paketit/ormlite-jdbc-6.1.jar" sourcepath="/home/topias/Lataukset/ormlite-jdbc-6.1-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/home/topias/Lataukset/ormlite-jdbc-6.1-javadoc.jar!/"/>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/topias/Lataukset/sqlite-jdbc-3.36.0.3.jar">
+	<classpathentry kind="lib" path="/home/topias/Lataukset/jar paketit/sqlite-jdbc-3.36.0.3.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
