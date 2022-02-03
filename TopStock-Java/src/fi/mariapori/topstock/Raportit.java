@@ -37,10 +37,15 @@ public class Raportit extends JDialog {
 	private static final long serialVersionUID = 6265165710333319738L;
 	private String[] raportit = new String[] { "Varastosaldot" };
 	private JTable table;
+	private String path;
 	/**
 	 * Create the dialog.
 	 */
 	public Raportit(ConnectionSource connectionSource) {
+		
+		String home = System.getProperty("user.home");
+		path = home + "/topstock/";
+		
 		setResizable(false);
 		setTitle("Raportit");
 		
@@ -99,7 +104,7 @@ public class Raportit extends JDialog {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				   String item = reportList.getSelectedValue();
-		           JFileChooser fchoose = new JFileChooser();
+		           JFileChooser fchoose = new JFileChooser(path);
 		           fchoose.setDialogTitle("Vie Exceliin");
 		           FileFilter filter = new FileNameExtensionFilter("Excel | .xlsx", "xlsx");
 		           fchoose.setFileFilter(filter);
