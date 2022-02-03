@@ -26,6 +26,8 @@ public class LisaaTuote extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtTuotekoodi;
 	private JTextField txtNimike;
+	private JTextField txtArvo;
+	private JTextField txtSaldo;
 
 	/**
 	 * Create the dialog.
@@ -58,6 +60,26 @@ public class LisaaTuote extends JDialog {
 		txtNimike.setColumns(10);
 		txtNimike.setBounds(210, 37, 191, 19);
 		contentPanel.add(txtNimike);
+		
+		txtArvo = new JTextField();
+		txtArvo.setColumns(10);
+		txtArvo.setBounds(210, 66, 191, 19);
+		contentPanel.add(txtArvo);
+		
+		JLabel lblArvo = new JLabel("Arvo");
+		lblArvo.setBounds(125, 68, 80, 15);
+		contentPanel.add(lblArvo);
+		{
+			txtSaldo = new JTextField();
+			txtSaldo.setColumns(10);
+			txtSaldo.setBounds(210, 97, 191, 19);
+			contentPanel.add(txtSaldo);
+		}
+		{
+			JLabel lblSaldo = new JLabel("Saldo");
+			lblSaldo.setBounds(125, 99, 80, 15);
+			contentPanel.add(lblSaldo);
+		}
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -66,7 +88,7 @@ public class LisaaTuote extends JDialog {
 				JButton okButton = new JButton("Lisää");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						Tavara uusTavara = new Tavara(txtTuotekoodi.getText(), txtNimike.getText(), 0);
+						Tavara uusTavara = new Tavara(txtTuotekoodi.getText(), txtNimike.getText(), Double.parseDouble(txtSaldo.getText()),Double.parseDouble(txtArvo.getText()));
 						try {
 							Dao<Tavara, String> productDao = DaoManager.createDao(connectionSource, Tavara.class);
 							productDao.create(uusTavara);

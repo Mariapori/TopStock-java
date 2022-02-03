@@ -15,14 +15,18 @@ public class Tavara {
 	@DatabaseField
 	private double Saldo;
 	
+	@DatabaseField
+	private double Arvo;
+	
 	public Tavara() {
 		
 	}
 	
-	public Tavara(String Tuotekoodi, String Nimike, double Saldo) {
+	public Tavara(String Tuotekoodi, String Nimike, double Saldo, double Arvo) {
 		this.Tuotekoodi = Tuotekoodi;
 		this.Nimike = Nimike;
 		this.Saldo = Saldo;
+		this.Arvo = Arvo;
 	}
 	
 	public String getProductCode() {
@@ -35,6 +39,14 @@ public class Tavara {
 	
 	public double getSaldo() {
 		return Saldo;
+	}
+	
+	public double getArvo() {
+		return Arvo;
+	}
+	
+	public void setArvo(double Amount) {
+		this.Arvo = Amount;
 	}
 	
 	public void AddSaldo(double Amount) {
